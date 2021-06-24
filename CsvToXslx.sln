@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvToXslx", "CsvToXslx\CsvToXslx.csproj", "{AE4E8867-BF3F-400B-8D1F-066131FE641B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplitterForCsv", "SplitterForCsv\SplitterForCsv.csproj", "{75D31C42-7887-4E04-9317-95368AFF3377}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvSplitter", "CsvSplitter\CsvSplitter.csproj", "{927CA3B2-40A4-4A71-821F-F5C6072D202B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvSplitter", "CsvSplitter\CsvSplitter.csproj", "{927CA3B2-40A4-4A71-821F-F5C6072D202B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{AE4E8867-BF3F-400B-8D1F-066131FE641B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE4E8867-BF3F-400B-8D1F-066131FE641B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE4E8867-BF3F-400B-8D1F-066131FE641B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75D31C42-7887-4E04-9317-95368AFF3377}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75D31C42-7887-4E04-9317-95368AFF3377}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75D31C42-7887-4E04-9317-95368AFF3377}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75D31C42-7887-4E04-9317-95368AFF3377}.Release|Any CPU.Build.0 = Release|Any CPU
 		{927CA3B2-40A4-4A71-821F-F5C6072D202B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{927CA3B2-40A4-4A71-821F-F5C6072D202B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{927CA3B2-40A4-4A71-821F-F5C6072D202B}.Release|Any CPU.ActiveCfg = Release|Any CPU

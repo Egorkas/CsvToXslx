@@ -7,7 +7,10 @@ namespace CsvSplitter
 {
     public class CsvSplit
     {
-        private static int chunkSize;
+        private static int chunkSize = 240000000;
+        private static int linesCount = 1000000;
+        public static int FileLinesCount { get; set; } 
+        
         public static int ChunkSize
         {
             get
@@ -16,24 +19,54 @@ namespace CsvSplitter
             }
             set
             {
-                chunkSize = 240000000;
+                chunkSize = value;
             }
         }
         public static bool IsLargeFile(string fileName)
         {
-            return File.ReadAllLines(fileName).Count() > chunkSize;
+            //FileInfo memorySize = new FileInfo(fileName);
+            //return memorySize.Length > chunkSize;
+            FileLinesCount = File.ReadAllLines(fileName).Count();
+            return FileLinesCount > linesCount;
         }
-        public static void SplitFile(string inputFile, string path)
+
+        public static void SplitFile(string inputPath, string outputPath)
+        {
+            int countOutputFiles = FileLinesCount % linesCount == 0 ? FileLinesCount / linesCount : FileLinesCount / linesCount + 1;
+            string fileName = Path.GetFileNameWithoutExtension(inputPath);
+            using(StreamReader sr = new StreamReader(inputPath))
+            {
+                int fileNumber = 1;
+                while (!sr.EndOfStream && fileNumber <= countOutputFiles)
+                {
+                    using(StreamWriter sw = new StreamWriter(outputPath + "\\" + fileName + "_" + fileNumber + ".csv"))
+                    {
+                        if (fileNumber == countOutputFiles)
+                        {
+                            sw.Write(sr.ReadToEnd());
+                            break;
+                        }
+                        for (int i = 0; i < linesCount; i++)
+                        {
+                            sw.WriteLine(sr.ReadLine());
+                        }
+                        fileNumber++;
+                    }
+                }
+            }                      
+        }
+
+        public static void SplitFileForMemorySize(string inputPath, string outputPath)
         {
             const int BUFFER_SIZE = 20 * 1024;
             byte[] buffer = new byte[BUFFER_SIZE];
-
-            using (Stream input = File.OpenRead(inputFile))
+            string fileName = Path.GetFileNameWithoutExtension(inputPath);
+            using (Stream input = File.OpenRead(inputPath))
             {
                 int index = 0;
                 while (input.Position < input.Length)
                 {
-                    using (Stream output = File.Create(path + "\\" + index + ".csv"))
+                    using (Stream output = File.Create(outputPath + "\\" + fileName + "_" + index + ".csv"))
                     {
                         int remaining = chunkSize, bytesRead;
                         while (remaining > 0 && (bytesRead = input.Read(buffer, 0,
@@ -48,5 +81,6 @@ namespace CsvSplitter
                 }
             }
         }
+
     }
 }

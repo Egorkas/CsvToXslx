@@ -17,40 +17,25 @@ namespace CsvToXslx
             //for support rus ANSI in .NET Core
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            string csvFileName = @"d:\PZ\CsvToXslx\CsvToXslx\bin\Debug\net5.0\CsvHelper\1.csv";
-            string xlsxFileName = @"d:\PZ\CsvToXslx\CsvToXslx\bin\Debug\net5.0\CsvHelper\CsvToXlsx\1.xlsx";
-            string workSheetsName = "Bank";
-            var firstRowIsHeader = false;
-            var format = new ExcelTextFormat();
-            format.Delimiter = ';';
-            format.Culture = new CultureInfo(Thread.CurrentThread.CurrentCulture.ToString());
-            format.EOL = "\n";
-            format.Encoding = Encoding.GetEncoding(1251);
-            var totalRowCounter = File.ReadLines(csvFileName).Count();
-            // If you use EPPlus in a noncommercial context
-            // according to the Polyform Noncommercial license:
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            string csvFolderName = @"\CsvConverter";
+            string xlsxFolderName = @"\XlsxResult";
+            InfoDir.CreateDirectories(csvFolderName, xlsxFolderName);
+            
+            var files = InfoDir.GetFilesFromDirectory(InfoDir.CsvFolder);
 
-            using (var package = new ExcelPackage(new FileInfo(xlsxFileName)))
+            foreach (var item in files)
             {
-                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(workSheetsName);
-                
-                worksheet.Cells["A1"].LoadFromText((new FileInfo(csvFileName)), format,  OfficeOpenXml.Table.TableStyles.Medium27, firstRowIsHeader);
-                package.Save();
+                if(CsvSplit.IsLargeFile(item))
+                {
+                    CsvSplit.SplitFile(item, InfoDir.CsvFolder);
+
+                }
+                    
+
             }
+            
 
             Console.WriteLine("Finished!");
-        }
-
-        private static Encoding GetEncoding(string filename)
-        {
-            using (var reader = new StreamReader(filename, Encoding.Default, true))
-            {
-                if (reader.Peek() >= 0)
-                    reader.Read();
-
-                return reader.CurrentEncoding;
-            }
         }
     }
 }
