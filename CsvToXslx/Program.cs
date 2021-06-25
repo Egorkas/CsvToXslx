@@ -20,22 +20,33 @@ namespace CsvToXslx
             string csvFolderName = @"\CsvConverter";
             string xlsxFolderName = @"\XlsxResult";
             InfoDir.CreateDirectories(csvFolderName, xlsxFolderName);
-            
-            var files = InfoDir.GetFilesFromDirectory(InfoDir.CsvFolder);
 
-            foreach (var item in files)
-            {
-                if(CsvSplit.IsLargeFile(item))
-                {
-                    CsvSplit.SplitFile(item, InfoDir.CsvFolder);
+            LargeFileMonitor(InfoDir.CsvFolder);
 
-                }
-                    
-
-            }
-            
+            FilesConverter(InfoDir.CsvFolder, InfoDir.XlsxFolder);
 
             Console.WriteLine("Finished!");
+        }
+
+        public static void FilesConverter(string inputFolder, string outputFolder)
+        {
+            var files = InfoDir.GetFilesFromDirectory(inputFolder);
+            foreach (var item in files)
+            {
+                CsvConverterToXlsx.CsvConvert(item, outputFolder);
+            }
+        }
+        public static void LargeFileMonitor(string folder)
+        {
+            var files = InfoDir.GetFilesFromDirectory(InfoDir.CsvFolder);
+            foreach (var item in files)
+            {
+                if (CsvSplit.IsManyLinesFile(item))
+                {
+                    CsvSplit.SplitFile(item, InfoDir.CsvFolder);
+                    File.Delete(item);
+                }
+            }
         }
     }
 }

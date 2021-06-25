@@ -12,10 +12,8 @@ namespace CsvToXslx
 {
     class CsvConverterToXlsx
     {
-        public static void CsvConvert(string file)
+        public static void CsvConvert(string fullInputPathFile, string outputPathDirectory)
         {
-            string csvFileName = @"d:\PZ\CsvToXslx\CsvToXslx\bin\Debug\net5.0\CsvHelper\1.csv";
-            string xlsxFileName = @"d:\PZ\CsvToXslx\CsvToXslx\bin\Debug\net5.0\CsvHelper\CsvToXlsx\1.xlsx";
             string workSheetsName = "Bank";
             var firstRowIsHeader = false;
             var format = new ExcelTextFormat();
@@ -23,16 +21,19 @@ namespace CsvToXslx
             format.Culture = new CultureInfo(Thread.CurrentThread.CurrentCulture.ToString());
             format.EOL = "\n";
             format.Encoding = Encoding.GetEncoding(1251);
-            var totalRowCounter = File.ReadLines(csvFileName).Count();
+
+            var totalRowCounter = File.ReadLines(fullInputPathFile).Count();
+            var outputName = Path.GetFileNameWithoutExtension(fullInputPathFile) + ".xlsx";
+
             // If you use EPPlus in a noncommercial context
             // according to the Polyform Noncommercial license:
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            using (var package = new ExcelPackage(new FileInfo(xlsxFileName)))
+            using (var package = new ExcelPackage(new FileInfo(outputPathDirectory + "\\" + outputName)))
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(workSheetsName);
 
-                worksheet.Cells["A1"].LoadFromText((new FileInfo(csvFileName)), format, OfficeOpenXml.Table.TableStyles.Medium27, firstRowIsHeader);
+                worksheet.Cells["A1"].LoadFromText((new FileInfo(fullInputPathFile)), format, OfficeOpenXml.Table.TableStyles.Medium27, firstRowIsHeader);
                 package.Save();
             }
         }

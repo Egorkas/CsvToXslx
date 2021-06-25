@@ -7,8 +7,8 @@ namespace CsvSplitter
 {
     public class CsvSplit
     {
-        private static int chunkSize = 240000000;
-        private static int linesCount = 1000000;
+        private static int chunkSize = 240000000;//Mb
+        private static int linesCount = 1000000;//Count of lines, because for  EPPluS MaxRows = 1048576;
         public static int FileLinesCount { get; set; } 
         
         public static int ChunkSize
@@ -22,12 +22,15 @@ namespace CsvSplitter
                 chunkSize = value;
             }
         }
-        public static bool IsLargeFile(string fileName)
+        public static bool IsManyLinesFile(string fileName)
         {
-            //FileInfo memorySize = new FileInfo(fileName);
-            //return memorySize.Length > chunkSize;
             FileLinesCount = File.ReadAllLines(fileName).Count();
             return FileLinesCount > linesCount;
+        }
+        public static bool IsLargeFile(string fileName)
+        {
+            FileInfo memorySize = new FileInfo(fileName);
+            return memorySize.Length > chunkSize;
         }
 
         public static void SplitFile(string inputPath, string outputPath)
