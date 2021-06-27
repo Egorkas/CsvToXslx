@@ -44,6 +44,7 @@ namespace CsvToXslx
                 if (CsvSplit.IsManyLinesFile(item))
                 {
                     CsvSplit.SplitFile(item, InfoDir.CsvFolder);
+                    //CsvSplit.SplitFileForMemorySize(item, InfoDir.CsvFolder);
                     File.Delete(item);
                 }
             }

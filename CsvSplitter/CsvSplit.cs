@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 
 namespace CsvSplitter
@@ -37,12 +38,12 @@ namespace CsvSplitter
         {
             int countOutputFiles = FileLinesCount % linesCount == 0 ? FileLinesCount / linesCount : FileLinesCount / linesCount + 1;
             string fileName = Path.GetFileNameWithoutExtension(inputPath);
-            using(StreamReader sr = new StreamReader(inputPath))
+            using(StreamReader sr = new StreamReader(inputPath, Encoding.GetEncoding(1251)))
             {
                 int fileNumber = 1;
                 while (!sr.EndOfStream && fileNumber <= countOutputFiles)
                 {
-                    using(StreamWriter sw = new StreamWriter(outputPath + "\\" + fileName + "_" + fileNumber + ".csv"))
+                    using(StreamWriter sw = new StreamWriter(outputPath + "\\" + fileName + "_" + fileNumber + ".csv", false, Encoding.GetEncoding(1251)))
                     {
                         if (fileNumber == countOutputFiles)
                         {

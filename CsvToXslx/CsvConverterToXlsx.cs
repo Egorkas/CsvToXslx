@@ -21,6 +21,7 @@ namespace CsvToXslx
             format.Culture = new CultureInfo(Thread.CurrentThread.CurrentCulture.ToString());
             format.EOL = "\n";
             format.Encoding = Encoding.GetEncoding(1251);
+            //format.Encoding = Encoding.GetEncoding(fullInputPathFile);
 
             var totalRowCounter = File.ReadLines(fullInputPathFile).Count();
             var outputName = Path.GetFileNameWithoutExtension(fullInputPathFile) + ".xlsx";
